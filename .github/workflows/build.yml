@@ -1,0 +1,40 @@
+name: build
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  amd64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+        bash build.sh amd64
+
+    - name: Push
+      uses: actions/upload-artifact@v4
+      with:
+        name: live-image-amd64.hybrid.iso
+        path: live-image-amd64.hybrid.iso
+        compression-level: 9
+  arm64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+        bash build.sh arm64
+
+    - name: Push
+      uses: actions/upload-artifact@v4
+      with:
+        name: live-image-arm64.hybrid.iso
+        path: live-image-arm64.hybrid.iso
+        compression-level: 9
