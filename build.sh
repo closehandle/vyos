@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
-if [[ "${1}" == '' ]]; then
-    exec docker container run \
-        --env TZ=Asia/Shanghai \
-        --env DEBIAN_FRONTEND=noninteractive \
-        --pull always \
-        --volume ./build.sh:/usr/bin/build.sh \
-        --volume .:/release \
-        --network host \
-        --privileged \
-        --interactive \
-        vyos/vyos-build:current \
-        build.sh "${1}"
-fi
+[[ "${1}" == '' ]] && exit 1
+[[ "${2}" == '' ]] && exec docker container run \
+    --env TZ=Asia/Shanghai \
+    --env DEBIAN_FRONTEND=noninteractive \
+    --pull always \
+    --volume ./build.sh:/usr/bin/build.sh \
+    --volume .:/release \
+    --network host \
+    --privileged \
+    --interactive \
+    vyos/vyos-build:current \
+    build.sh "${1}" build
 
 git clone https://github.com/vyos/vyos-build --depth 1 --single-branch vyos || exit $?
 pushd vyos
